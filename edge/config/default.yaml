@@ -1,0 +1,66 @@
+backend:
+  url: http://backend:8000
+  api_key: edge-device-shared-secret
+  health_interval_seconds: 60
+  metrics_interval_seconds: 60
+  retry_max_attempts: 5
+  retry_base_delay_seconds: 2
+
+inference:
+  vision_model_path: ./models/fall_detection.onnx
+  radar_model_path: ./models/radar_classifier.onnx
+  pose_model_path: ./models/trt_pose_resnet18.onnx
+  confidence_thresholds:
+    high_min: 85
+    medium_min: 60
+    low_min: 30
+  processing_fps: 10
+
+pose_rules:
+  # Bed-Exit thresholds
+  bed_exit_confirm_frames: 6
+  bed_exit_upright_max_angle: 45.0
+  bed_exit_cooldown_seconds: 30.0
+  # On-Floor thresholds
+  on_floor_hip_threshold: 0.75
+  on_floor_lying_min_angle: 55.0
+  on_floor_sustain_seconds: 3.0
+  on_floor_cooldown_seconds: 60.0
+  # Fall-Suspected thresholds
+  fall_hip_velocity_threshold: 0.8
+  fall_velocity_window: 0.5
+  fall_confirm_window_seconds: 2.0
+  fall_cooldown_seconds: 60.0
+  # Frame dimensions (updated at runtime from camera stream)
+  frame_height: 480
+  frame_width: 640
+
+keypoint_tracker:
+  ema_alpha: 0.4
+  window_seconds: 5.0
+  min_confidence: 0.3
+
+fusion:
+  time_window_seconds: 5
+  confidence_boost: 15
+
+clip_storage:
+  base_path: /data/clips
+  pre_event_seconds: 10
+  post_event_seconds: 15
+  retention_days: 7
+  purge_threshold_percent: 90
+
+ntp:
+  server: pool.ntp.org
+  sync_interval_seconds: 300
+  drift_warn_ms: 10
+  drift_critical_ms: 50
+
+self_test:
+  schedule_hour: 3
+
+edge_device_id: edge-floor1
+config_sync_interval_seconds: 120
+
+mode: simulator

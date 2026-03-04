@@ -1,0 +1,30 @@
+cameras:
+  - id: cam-101
+    rtsp_url: rtsp://192.168.1.101:554/stream
+    room_id: room-101
+    room_number: "101"
+    type: ai-vision
+    # Bed-zone polygon in normalized coordinates (0.0-1.0).
+    # Vertices define a clockwise polygon around the bed area.
+    # Calibrate by running: python -m src.tools.zone_calibrator --camera cam-101
+    bed_zone:
+      label: bed
+      vertices:
+        - [0.10, 0.30]  # top-left of bed
+        - [0.55, 0.30]  # top-right of bed
+        - [0.55, 0.85]  # bottom-right of bed
+        - [0.10, 0.85]  # bottom-left of bed
+
+radars:
+  - id: radar-101
+    serial_port: /dev/ttyUSB0
+    baud_rate: 115200
+    room_id: room-101
+    room_number: "101"
+    type: ai-sensor
+
+callbell:
+  vendor: jeron
+  host: 192.168.1.200
+  port: 4000
+  protocol: tcp
